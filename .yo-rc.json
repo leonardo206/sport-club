@@ -35,9 +35,15 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "blueprints": [],
-    "prettierJava": true
+    "prettierJava": true,
+    "lastLiquibaseTimestamp": 1612094928000
   },
   "git-provider": "GitHub",
   "git-company": "leonardo206",
-  "repository-name": "sport-club"
+  "repository-name": "sport-club",
+  "generator-jhipster-entity-audit": {
+    "auditFramework": "custom",
+    "auditPage": true,
+    "lastLiquibaseTimestamp": 1612096260000
+  }
 }

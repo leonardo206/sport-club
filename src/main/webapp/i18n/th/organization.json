@@ -1,0 +1,26 @@
+{
+  "sportClubApp": {
+    "organization": {
+      "home": {
+        "title": "Organizations",
+        "createLabel": "สร้าง Organization",
+        "createOrEditLabel": "สร้างหรือแก้ไข Organization",
+        "notFound": "No Organizations found"
+      },
+      "created": "Organization ถูกสร้างด้วย {{ param }}",
+      "updated": "Organization ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Organization ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Organization {{ id }}?"
+      },
+      "detail": {
+        "title": "Organization"
+      },
+      "organizationOwnerJhiUserId": "Organization Owner Jhi User Id",
+      "organizationName": "Organization Name",
+      "taxNumber": "Tax Number",
+      "status": "Status",
+      "user": "User"
+    }
+  }
+}
