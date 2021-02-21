@@ -1,0 +1,25 @@
+{
+  "sportClubApp": {
+    "clubManager": {
+      "home": {
+        "title": "Club Managers",
+        "createLabel": "สร้าง Club Manager",
+        "createOrEditLabel": "สร้างหรือแก้ไข Club Manager",
+        "notFound": "No Club Managers found"
+      },
+      "created": "Club Manager ถูกสร้างด้วย {{ param }}",
+      "updated": "Club Manager ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Club Manager ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Club Manager {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Manager"
+      },
+      "status": "Status",
+      "user": "User",
+      "clubs": "Clubs",
+      "organization": "Organization"
+    }
+  }
+}

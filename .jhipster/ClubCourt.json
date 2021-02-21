@@ -1,0 +1,56 @@
+{
+  "name": "ClubCourt",
+  "fields": [
+    {
+      "fieldName": "courtCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "courtName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ActiveInactiveStatus",
+      "fieldValues": "Active,Inactive"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "clubCourtType",
+      "otherEntityRelationshipName": "clubCourt",
+      "relationshipValidateRules": "required",
+      "relationshipName": "clubCourtType",
+      "otherEntityField": "clubCourtTypeName",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "booking",
+      "otherEntityRelationshipName": "clubCourt",
+      "relationshipName": "bookings"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "club",
+      "otherEntityRelationshipName": "clubCourts",
+      "relationshipName": "club",
+      "otherEntityField": "clubName"
+    }
+  ],
+  "changelogDate": "20210221092603",
+  "entityTableName": "sc_club_court",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["SportClub"],
+  "enableEntityAudit": true
+}

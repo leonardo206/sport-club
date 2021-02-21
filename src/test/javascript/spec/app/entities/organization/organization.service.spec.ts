@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { OrganizationService } from 'app/entities/organization/organization.service';
 import { IOrganization, Organization } from 'app/shared/model/organization.model';
+import { ActiveInactiveStatus } from 'app/shared/model/enumerations/active-inactive-status.model';
 
 describe('Service Tests', () => {
   describe('Organization Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(OrganizationService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Organization(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Organization(0, 'AAAAAAA', 'AAAAAAA', ActiveInactiveStatus.Active);
     });
 
     describe('Service methods', () => {
@@ -54,7 +55,6 @@ describe('Service Tests', () => {
       it('should update a Organization', () => {
         const returnedFromService = Object.assign(
           {
-            organizationOwnerJhiUserId: 'BBBBBB',
             organizationName: 'BBBBBB',
             taxNumber: 'BBBBBB',
             status: 'BBBBBB',
@@ -74,7 +74,6 @@ describe('Service Tests', () => {
       it('should return a list of Organization', () => {
         const returnedFromService = Object.assign(
           {
-            organizationOwnerJhiUserId: 'BBBBBB',
             organizationName: 'BBBBBB',
             taxNumber: 'BBBBBB',
             status: 'BBBBBB',

@@ -1,6 +1,9 @@
 package com.mazimao.sportclub.domain;
 
+import com.mazimao.sportclub.domain.enumeration.ActiveInactiveStatus;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -9,15 +12,12 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "sc_organization")
-public class Organization extends AbstractAuditingEntity implements Serializable {
+public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "organization_owner_jhi_user_id", unique = true)
-    private String organizationOwnerJhiUserId;
 
     @NotNull
     @Column(name = "organization_name", nullable = false, unique = true)
@@ -28,12 +28,20 @@ public class Organization extends AbstractAuditingEntity implements Serializable
     @Column(name = "tax_number", nullable = false, unique = true)
     private String taxNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ActiveInactiveStatus status;
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @NotNull
     @JoinColumn(unique = true)
     private User user;
+
+    @OneToMany(mappedBy = "organization")
+    private Set<ClubManager> clubManagers = new HashSet<>();
+
+    @OneToMany(mappedBy = "organization")
+    private Set<Club> clubs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -42,19 +50,6 @@ public class Organization extends AbstractAuditingEntity implements Serializable
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOrganizationOwnerJhiUserId() {
-        return organizationOwnerJhiUserId;
-    }
-
-    public Organization organizationOwnerJhiUserId(String organizationOwnerJhiUserId) {
-        this.organizationOwnerJhiUserId = organizationOwnerJhiUserId;
-        return this;
-    }
-
-    public void setOrganizationOwnerJhiUserId(String organizationOwnerJhiUserId) {
-        this.organizationOwnerJhiUserId = organizationOwnerJhiUserId;
     }
 
     public String getOrganizationName() {
@@ -83,16 +78,16 @@ public class Organization extends AbstractAuditingEntity implements Serializable
         this.taxNumber = taxNumber;
     }
 
-    public String getStatus() {
+    public ActiveInactiveStatus getStatus() {
         return status;
     }
 
-    public Organization status(String status) {
+    public Organization status(ActiveInactiveStatus status) {
         this.status = status;
         return this;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
 
@@ -107,6 +102,56 @@ public class Organization extends AbstractAuditingEntity implements Serializable
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<ClubManager> getClubManagers() {
+        return clubManagers;
+    }
+
+    public Organization clubManagers(Set<ClubManager> clubManagers) {
+        this.clubManagers = clubManagers;
+        return this;
+    }
+
+    public Organization addClubManagers(ClubManager clubManager) {
+        this.clubManagers.add(clubManager);
+        clubManager.setOrganization(this);
+        return this;
+    }
+
+    public Organization removeClubManagers(ClubManager clubManager) {
+        this.clubManagers.remove(clubManager);
+        clubManager.setOrganization(null);
+        return this;
+    }
+
+    public void setClubManagers(Set<ClubManager> clubManagers) {
+        this.clubManagers = clubManagers;
+    }
+
+    public Set<Club> getClubs() {
+        return clubs;
+    }
+
+    public Organization clubs(Set<Club> clubs) {
+        this.clubs = clubs;
+        return this;
+    }
+
+    public Organization addClubs(Club club) {
+        this.clubs.add(club);
+        club.setOrganization(this);
+        return this;
+    }
+
+    public Organization removeClubs(Club club) {
+        this.clubs.remove(club);
+        club.setOrganization(null);
+        return this;
+    }
+
+    public void setClubs(Set<Club> clubs) {
+        this.clubs = clubs;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -132,7 +177,6 @@ public class Organization extends AbstractAuditingEntity implements Serializable
     public String toString() {
         return "Organization{" +
             "id=" + getId() +
-            ", organizationOwnerJhiUserId='" + getOrganizationOwnerJhiUserId() + "'" +
             ", organizationName='" + getOrganizationName() + "'" +
             ", taxNumber='" + getTaxNumber() + "'" +
             ", status='" + getStatus() + "'" +

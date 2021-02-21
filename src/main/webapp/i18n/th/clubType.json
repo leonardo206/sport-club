@@ -1,0 +1,25 @@
+{
+  "sportClubApp": {
+    "clubType": {
+      "home": {
+        "title": "Club Types",
+        "createLabel": "สร้าง Club Type",
+        "createOrEditLabel": "สร้างหรือแก้ไข Club Type",
+        "notFound": "No Club Types found"
+      },
+      "created": "Club Type ถูกสร้างด้วย {{ param }}",
+      "updated": "Club Type ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Club Type ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Club Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Type"
+      },
+      "clubTypeCode": "Club Type Code",
+      "clubTypeName": "Club Type Name",
+      "clubTypeDescription": "Club Type Description",
+      "status": "Status"
+    }
+  }
+}

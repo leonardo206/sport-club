@@ -8,6 +8,14 @@
       "entities": {
         "main": "Entities",
         "organization": "Organization",
+        "client": "Client",
+        "userDetails": "User Details",
+        "clubManager": "Club Manager",
+        "clubType": "Club Type",
+        "club": "Club",
+        "clubCourtType": "Club Court Type",
+        "clubCourt": "Club Court",
+        "booking": "Booking",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -30,7 +38,6 @@
         "audits": "การตรวจสอบ",
         "apidocs": "API",
         "database": "ฐานข้อมูล",
-        "entity-audit": "Entity Audit",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "language": "ภาษา"

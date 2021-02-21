@@ -8,10 +8,6 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="sportClubApp.organization.organizationOwnerJhiUserId">Organization Owner Jhi User Id</span></dt>
-                <dd>
-                    <span>{{ organization.organizationOwnerJhiUserId }}</span>
-                </dd>
                 <dt><span jhiTranslate="sportClubApp.organization.organizationName">Organization Name</span></dt>
                 <dd>
                     <span>{{ organization.organizationName }}</span>
@@ -22,7 +18,7 @@
                 </dd>
                 <dt><span jhiTranslate="sportClubApp.organization.status">Status</span></dt>
                 <dd>
-                    <span>{{ organization.status }}</span>
+                    <span jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + organization.status }}">{{ organization.status }}</span>
                 </dd>
                 <dt><span jhiTranslate="sportClubApp.organization.user">User</span></dt>
                 <dd>

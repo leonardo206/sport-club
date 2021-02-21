@@ -1,0 +1,27 @@
+{
+  "sportClubApp": {
+    "clubCourt": {
+      "home": {
+        "title": "Club Courts",
+        "createLabel": "สร้าง Club Court",
+        "createOrEditLabel": "สร้างหรือแก้ไข Club Court",
+        "notFound": "No Club Courts found"
+      },
+      "created": "Club Court ถูกสร้างด้วย {{ param }}",
+      "updated": "Club Court ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Club Court ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Club Court {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Court"
+      },
+      "courtCode": "Court Code",
+      "courtName": "Court Name",
+      "status": "Status",
+      "clubCourtType": "Club Court Type",
+      "bookings": "Bookings",
+      "club": "Club"
+    }
+  }
+}

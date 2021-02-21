@@ -5,7 +5,7 @@
     "baseName": "SportClub",
     "packageName": "com.mazimao.sportclub",
     "packageFolder": "com/mazimao/sportclub",
-    "serverPort": 8080,
+    "serverPort": "8080",
     "serviceDiscoveryType": false,
     "authenticationType": "oauth2",
     "uaaBaseName": "../uaa",
@@ -36,7 +36,10 @@
     "otherModules": [],
     "blueprints": [],
     "prettierJava": true,
-    "lastLiquibaseTimestamp": 1612094928000
+    "lastLiquibaseTimestamp": 1613062681000,
+    "skipUserManagement": true,
+    "skipClient": false,
+    "skipServer": false
   },
   "git-provider": "GitHub",
   "git-company": "leonardo206",
@@ -45,5 +48,6 @@
     "auditFramework": "custom",
     "auditPage": true,
     "lastLiquibaseTimestamp": 1612096260000
-  }
+  },
+  "entities": ["Client", "Organization", "UserDetails", "ClubManager", "ClubType", "Club", "ClubCourtType", "ClubCourt", "Booking"]
 }

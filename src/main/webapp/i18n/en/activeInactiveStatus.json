@@ -1,0 +1,9 @@
+{
+  "sportClubApp": {
+    "ActiveInactiveStatus": {
+      "null": "",
+      "Active": "Active",
+      "Inactive": "Inactive"
+    }
+  }
+}

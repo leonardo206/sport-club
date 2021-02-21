@@ -16,11 +16,12 @@
       "detail": {
         "title": "Organization"
       },
-      "organizationOwnerJhiUserId": "Organization Owner Jhi User Id",
       "organizationName": "Organization Name",
       "taxNumber": "Tax Number",
       "status": "Status",
-      "user": "User"
+      "user": "User",
+      "clubManagers": "Club Managers",
+      "clubs": "Clubs"
     }
   }
 }

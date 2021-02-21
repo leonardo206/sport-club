@@ -1,0 +1,25 @@
+{
+  "sportClubApp": {
+    "clubType": {
+      "home": {
+        "title": "Club Types",
+        "createLabel": "Create a new Club Type",
+        "createOrEditLabel": "Create or edit a Club Type",
+        "notFound": "No Club Types found"
+      },
+      "created": "A new Club Type is created with identifier {{ param }}",
+      "updated": "A Club Type is updated with identifier {{ param }}",
+      "deleted": "A Club Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Club Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Type"
+      },
+      "clubTypeCode": "Club Type Code",
+      "clubTypeName": "Club Type Name",
+      "clubTypeDescription": "Club Type Description",
+      "status": "Status"
+    }
+  }
+}

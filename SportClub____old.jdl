@@ -1,0 +1,65 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType oauth2
+    baseName SportClub
+    blueprints []
+    buildTool maven
+    cacheProvider no
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme none
+    creationTimestamp 1611490806496
+    databaseType sql
+    devDatabaseType mysql
+    dtoSuffix DTO
+    embeddableLaunchScript false
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "6.10.5"
+    languages [th, en]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName com.mazimao.sportclub
+    prodDatabaseType mysql
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement true
+    testFrameworks []
+    uaaBaseName ../uaa
+    useSass true
+    websocket false
+  }
+
+  entities Client, Organization
+}
+
+entity Client {
+  clientJhiUserId String,
+  firstName String,
+  middleName String,
+  lastName String,
+  mobileNumber String,
+  status String
+}
+entity Organization (sc_organization) {
+  organizationOwnerJhiUserId String unique,
+  organizationName String required unique,
+  taxNumber String required unique pattern(/^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}$/),
+  status String
+}
+relationship OneToOne {
+  Client{user(login) required} to User,
+  Organization{user(login)} to User
+}
+
+dto Client, Organization with mapstruct
+paginate Client, Organization with pagination
+service Client, Organization with serviceImpl
+filter Client, Organization

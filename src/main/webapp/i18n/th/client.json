@@ -1,0 +1,24 @@
+{
+  "sportClubApp": {
+    "client": {
+      "home": {
+        "title": "Clients",
+        "createLabel": "สร้าง Client",
+        "createOrEditLabel": "สร้างหรือแก้ไข Client",
+        "notFound": "No Clients found"
+      },
+      "created": "Client ถูกสร้างด้วย {{ param }}",
+      "updated": "Client ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Client ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Client {{ id }}?"
+      },
+      "detail": {
+        "title": "Client"
+      },
+      "status": "Status",
+      "user": "User",
+      "bookings": "Bookings"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "ClubManager",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "ActiveInactiveStatus",
+      "fieldValues": "Active,Inactive"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "clubManager",
+      "relationshipValidateRules": "required",
+      "relationshipName": "user",
+      "otherEntityField": "login",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "club",
+      "otherEntityRelationshipName": "clubManager",
+      "relationshipName": "clubs",
+      "otherEntityField": "clubName",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "organization",
+      "otherEntityRelationshipName": "clubManagers",
+      "relationshipName": "organization",
+      "otherEntityField": "organizationName"
+    }
+  ],
+  "changelogDate": "20210221092103",
+  "entityTableName": "sc_club_manager",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["SportClub"],
+  "enableEntityAudit": true
+}

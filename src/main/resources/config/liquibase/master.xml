@@ -15,9 +15,22 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210131120848_added_entity_Organization.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210131123100_added_entity_EntityAuditEvent.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210211165801_added_entity_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221091903_added_entity_UserDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092103_added_entity_ClubManager.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092303_added_entity_ClubType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092403_added_entity_Club.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092503_added_entity_ClubCourtType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092603_added_entity_ClubCourt.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092703_added_entity_Booking.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210131120848_added_entity_constraints_Organization.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210211165801_added_entity_constraints_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221091903_added_entity_constraints_UserDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092103_added_entity_constraints_ClubManager.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092403_added_entity_constraints_Club.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092603_added_entity_constraints_ClubCourt.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210221092703_added_entity_constraints_Booking.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

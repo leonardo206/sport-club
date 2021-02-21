@@ -1,0 +1,25 @@
+{
+  "sportClubApp": {
+    "clubCourtType": {
+      "home": {
+        "title": "Club Court Types",
+        "createLabel": "Create a new Club Court Type",
+        "createOrEditLabel": "Create or edit a Club Court Type",
+        "notFound": "No Club Court Types found"
+      },
+      "created": "A new Club Court Type is created with identifier {{ param }}",
+      "updated": "A Club Court Type is updated with identifier {{ param }}",
+      "deleted": "A Club Court Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Club Court Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Court Type"
+      },
+      "clubCourtTypeCode": "Club Court Type Code",
+      "clubCourtTypeName": "Club Court Type Name",
+      "clubCourtTypeDescription": "Club Court Type Description",
+      "status": "Status"
+    }
+  }
+}

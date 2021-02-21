@@ -1,0 +1,133 @@
+
+application {
+  config {
+    applicationType monolith
+    authenticationType oauth2
+    baseName SportClub
+    blueprints []
+    buildTool maven
+    cacheProvider no
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme none
+    creationTimestamp 1611490806496
+    databaseType sql
+    devDatabaseType mysql
+    dtoSuffix DTO
+    embeddableLaunchScript false
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "6.10.5"
+    languages [th, en]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName com.mazimao.sportclub
+    prodDatabaseType mysql
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement true
+    testFrameworks []
+    uaaBaseName "../uaa"
+    useSass true
+    websocket false
+  }
+
+  entities Client, Organization, UserDetails, Organization, ClubManager, Client, ClubType, Club, ClubCourtType, ClubCourt, Booking
+}
+
+
+enum ActiveInactiveStatus {
+	Active,
+    Inactive
+}
+
+entity UserDetails (sc_user_details) {
+  mobileNumber String required unique,
+  dateOfBirth ZonedDateTime required,
+  profilePic Blob,
+  description String,
+  status ActiveInactiveStatus
+}
+
+
+entity Organization (sc_organization) {
+  organizationName String required unique,
+  taxNumber String required unique pattern(/^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}$/),
+  status ActiveInactiveStatus
+}
+
+entity ClubManager (sc_club_manager) {
+  status ActiveInactiveStatus
+}
+
+entity Client (sc_client) {
+  status ActiveInactiveStatus
+}
+
+
+entity ClubType (sc_club_type) {
+  clubTypeCode String required unique,
+  clubTypeName String required unique,
+  clubTypeDescription String required,
+  status ActiveInactiveStatus
+}
+
+entity Club (sc_club) {
+  clubName String required unique,
+  status ActiveInactiveStatus
+}
+
+entity ClubCourtType (sc_club_court_type) {
+  clubCourtTypeCode String required unique,
+  clubCourtTypeName String required unique,
+  clubCourtTypeDescription String,
+  status ActiveInactiveStatus
+}
+
+entity ClubCourt (sc_club_court) {
+  courtCode String required unique,
+  courtName String required unique,
+  status ActiveInactiveStatus
+}
+
+entity Booking (sc_booking) {
+  bookingCode String required,
+  bookingTime ZonedDateTime required,
+  status ActiveInactiveStatus
+}
+
+
+
+relationship OneToMany {
+	Organization{clubManagers(id)} to ClubManager{organization(organizationName)}
+    Organization{clubs(clubName)} to Club{organization(organizationName)}
+    Club{clubCourts(courtName)} to ClubCourt{club(clubName)}
+    Client{bookings(bookingCode)} to Booking{client(id)}
+    ClubCourt{bookings(bookingCode)} to Booking{clubCourt(courtName)}
+}
+
+relationship ManyToMany { 
+	ClubManager{clubs(clubName)} to Club{clubManager(id)}
+}
+
+relationship OneToOne {
+    Club{clubType(clubTypeName) required} to ClubType,
+    ClubCourt{clubCourtType(clubCourtTypeName) required} to ClubCourtType,
+    UserDetails{user(login) required} to User,
+	Organization{user(login) required} to User,
+  	ClubManager{user(login) required} to User,
+  	Client{user(login) required} to User
+}
+
+dto Client, Organization, UserDetails, Organization, ClubManager, Client, ClubType, Club, ClubCourtType, ClubCourt, Booking with mapstruct
+paginate Client, Organization, UserDetails, Organization, ClubManager, Client, ClubType, Club, ClubCourtType, ClubCourt, Booking with pagination
+service Client, Organization, UserDetails, Organization, ClubManager, Client, ClubType, Club, ClubCourtType, ClubCourt, Booking with serviceImpl
+filter Client, Organization, UserDetails, Organization, ClubManager, Client, ClubType, Club, ClubCourtType, ClubCourt, Booking
+
+

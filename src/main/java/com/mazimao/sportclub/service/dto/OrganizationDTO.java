@@ -1,15 +1,14 @@
 package com.mazimao.sportclub.service.dto;
 
+import com.mazimao.sportclub.domain.enumeration.ActiveInactiveStatus;
 import java.io.Serializable;
 import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.mazimao.sportclub.domain.Organization} entity.
  */
-public class OrganizationDTO extends AbstractAuditingDTO implements Serializable {
+public class OrganizationDTO implements Serializable {
     private Long id;
-
-    private String organizationOwnerJhiUserId;
 
     @NotNull
     private String organizationName;
@@ -18,7 +17,7 @@ public class OrganizationDTO extends AbstractAuditingDTO implements Serializable
     @Pattern(regexp = "^[A-Za-z]{2,4}(?=.{2,12}$)[-_\\s0-9]*(?:[a-zA-Z][-_\\s0-9]*){0,2}$")
     private String taxNumber;
 
-    private String status;
+    private ActiveInactiveStatus status;
 
     private String userId;
 
@@ -30,14 +29,6 @@ public class OrganizationDTO extends AbstractAuditingDTO implements Serializable
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOrganizationOwnerJhiUserId() {
-        return organizationOwnerJhiUserId;
-    }
-
-    public void setOrganizationOwnerJhiUserId(String organizationOwnerJhiUserId) {
-        this.organizationOwnerJhiUserId = organizationOwnerJhiUserId;
     }
 
     public String getOrganizationName() {
@@ -56,11 +47,11 @@ public class OrganizationDTO extends AbstractAuditingDTO implements Serializable
         this.taxNumber = taxNumber;
     }
 
-    public String getStatus() {
+    public ActiveInactiveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
 
@@ -102,7 +93,6 @@ public class OrganizationDTO extends AbstractAuditingDTO implements Serializable
     public String toString() {
         return "OrganizationDTO{" +
             "id=" + getId() +
-            ", organizationOwnerJhiUserId='" + getOrganizationOwnerJhiUserId() + "'" +
             ", organizationName='" + getOrganizationName() + "'" +
             ", taxNumber='" + getTaxNumber() + "'" +
             ", status='" + getStatus() + "'" +

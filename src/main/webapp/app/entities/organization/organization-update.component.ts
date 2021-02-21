@@ -20,11 +20,10 @@ export class OrganizationUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    organizationOwnerJhiUserId: [null, []],
     organizationName: [null, [Validators.required]],
     taxNumber: [null, [Validators.required, Validators.pattern('^[A-Za-z]{2,4}(?=.{2,12}$)[-_\\s0-9]*(?:[a-zA-Z][-_\\s0-9]*){0,2}$')]],
     status: [],
-    userId: [],
+    userId: [null, Validators.required],
   });
 
   constructor(
@@ -45,7 +44,6 @@ export class OrganizationUpdateComponent implements OnInit {
   updateForm(organization: IOrganization): void {
     this.editForm.patchValue({
       id: organization.id,
-      organizationOwnerJhiUserId: organization.organizationOwnerJhiUserId,
       organizationName: organization.organizationName,
       taxNumber: organization.taxNumber,
       status: organization.status,
@@ -71,7 +69,6 @@ export class OrganizationUpdateComponent implements OnInit {
     return {
       ...new Organization(),
       id: this.editForm.get(['id'])!.value,
-      organizationOwnerJhiUserId: this.editForm.get(['organizationOwnerJhiUserId'])!.value,
       organizationName: this.editForm.get(['organizationName'])!.value,
       taxNumber: this.editForm.get(['taxNumber'])!.value,
       status: this.editForm.get(['status'])!.value,

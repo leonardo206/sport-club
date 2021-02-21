@@ -14,6 +14,10 @@ public interface OrganizationMapper extends EntityMapper<OrganizationDTO, Organi
     OrganizationDTO toDto(Organization organization);
 
     @Mapping(source = "userId", target = "user")
+    @Mapping(target = "clubManagers", ignore = true)
+    @Mapping(target = "removeClubManagers", ignore = true)
+    @Mapping(target = "clubs", ignore = true)
+    @Mapping(target = "removeClubs", ignore = true)
     Organization toEntity(OrganizationDTO organizationDTO);
 
     default Organization fromId(Long id) {

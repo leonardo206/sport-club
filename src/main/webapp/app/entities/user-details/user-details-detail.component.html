@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userDetails">
+            <h2><span jhiTranslate="sportClubApp.userDetails.detail.title">User Details</span> {{ userDetails.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sportClubApp.userDetails.mobileNumber">Mobile Number</span></dt>
+                <dd>
+                    <span>{{ userDetails.mobileNumber }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.userDetails.dateOfBirth">Date Of Birth</span></dt>
+                <dd>
+                    <span>{{ userDetails.dateOfBirth }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.userDetails.profilePic">Profile Pic</span></dt>
+                <dd>
+                    <div *ngIf="userDetails.profilePic">
+                        <a (click)="openFile(userDetails.profilePicContentType, userDetails.profilePic)" jhiTranslate="entity.action.open">open</a>
+                        {{ userDetails.profilePicContentType }}, {{ byteSize(userDetails.profilePic) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.userDetails.description">Description</span></dt>
+                <dd>
+                    <span>{{ userDetails.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.userDetails.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + userDetails.status }}">{{ userDetails.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.userDetails.user">User</span></dt>
+                <dd>
+                    {{ userDetails.userLogin }}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-details', userDetails.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

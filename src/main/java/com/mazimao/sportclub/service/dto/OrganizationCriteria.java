@@ -1,5 +1,6 @@
 package com.mazimao.sportclub.service.dto;
 
+import com.mazimao.sportclub.domain.enumeration.ActiveInactiveStatus;
 import io.github.jhipster.service.Criteria;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
@@ -21,29 +22,50 @@ import java.util.Objects;
  * fix type specific filters.
  */
 public class OrganizationCriteria implements Serializable, Criteria {
+
+    /**
+     * Class for filtering ActiveInactiveStatus
+     */
+    public static class ActiveInactiveStatusFilter extends Filter<ActiveInactiveStatus> {
+
+        public ActiveInactiveStatusFilter() {}
+
+        public ActiveInactiveStatusFilter(ActiveInactiveStatusFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public ActiveInactiveStatusFilter copy() {
+            return new ActiveInactiveStatusFilter(this);
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
-
-    private StringFilter organizationOwnerJhiUserId;
 
     private StringFilter organizationName;
 
     private StringFilter taxNumber;
 
-    private StringFilter status;
+    private ActiveInactiveStatusFilter status;
 
     private StringFilter userId;
+
+    private LongFilter clubManagersId;
+
+    private LongFilter clubsId;
 
     public OrganizationCriteria() {}
 
     public OrganizationCriteria(OrganizationCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.organizationOwnerJhiUserId = other.organizationOwnerJhiUserId == null ? null : other.organizationOwnerJhiUserId.copy();
         this.organizationName = other.organizationName == null ? null : other.organizationName.copy();
         this.taxNumber = other.taxNumber == null ? null : other.taxNumber.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
+        this.clubManagersId = other.clubManagersId == null ? null : other.clubManagersId.copy();
+        this.clubsId = other.clubsId == null ? null : other.clubsId.copy();
     }
 
     @Override
@@ -57,14 +79,6 @@ public class OrganizationCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
-    }
-
-    public StringFilter getOrganizationOwnerJhiUserId() {
-        return organizationOwnerJhiUserId;
-    }
-
-    public void setOrganizationOwnerJhiUserId(StringFilter organizationOwnerJhiUserId) {
-        this.organizationOwnerJhiUserId = organizationOwnerJhiUserId;
     }
 
     public StringFilter getOrganizationName() {
@@ -83,11 +97,11 @@ public class OrganizationCriteria implements Serializable, Criteria {
         this.taxNumber = taxNumber;
     }
 
-    public StringFilter getStatus() {
+    public ActiveInactiveStatusFilter getStatus() {
         return status;
     }
 
-    public void setStatus(StringFilter status) {
+    public void setStatus(ActiveInactiveStatusFilter status) {
         this.status = status;
     }
 
@@ -97,6 +111,22 @@ public class OrganizationCriteria implements Serializable, Criteria {
 
     public void setUserId(StringFilter userId) {
         this.userId = userId;
+    }
+
+    public LongFilter getClubManagersId() {
+        return clubManagersId;
+    }
+
+    public void setClubManagersId(LongFilter clubManagersId) {
+        this.clubManagersId = clubManagersId;
+    }
+
+    public LongFilter getClubsId() {
+        return clubsId;
+    }
+
+    public void setClubsId(LongFilter clubsId) {
+        this.clubsId = clubsId;
     }
 
     @Override
@@ -110,17 +140,18 @@ public class OrganizationCriteria implements Serializable, Criteria {
         final OrganizationCriteria that = (OrganizationCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(organizationOwnerJhiUserId, that.organizationOwnerJhiUserId) &&
             Objects.equals(organizationName, that.organizationName) &&
             Objects.equals(taxNumber, that.taxNumber) &&
             Objects.equals(status, that.status) &&
-            Objects.equals(userId, that.userId)
+            Objects.equals(userId, that.userId) &&
+            Objects.equals(clubManagersId, that.clubManagersId) &&
+            Objects.equals(clubsId, that.clubsId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, organizationOwnerJhiUserId, organizationName, taxNumber, status, userId);
+        return Objects.hash(id, organizationName, taxNumber, status, userId, clubManagersId, clubsId);
     }
 
     // prettier-ignore
@@ -128,11 +159,12 @@ public class OrganizationCriteria implements Serializable, Criteria {
     public String toString() {
         return "OrganizationCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (organizationOwnerJhiUserId != null ? "organizationOwnerJhiUserId=" + organizationOwnerJhiUserId + ", " : "") +
                 (organizationName != null ? "organizationName=" + organizationName + ", " : "") +
                 (taxNumber != null ? "taxNumber=" + taxNumber + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
                 (userId != null ? "userId=" + userId + ", " : "") +
+                (clubManagersId != null ? "clubManagersId=" + clubManagersId + ", " : "") +
+                (clubsId != null ? "clubsId=" + clubsId + ", " : "") +
             "}";
     }
 }

@@ -1,0 +1,27 @@
+{
+  "sportClubApp": {
+    "clubCourt": {
+      "home": {
+        "title": "Club Courts",
+        "createLabel": "Create a new Club Court",
+        "createOrEditLabel": "Create or edit a Club Court",
+        "notFound": "No Club Courts found"
+      },
+      "created": "A new Club Court is created with identifier {{ param }}",
+      "updated": "A Club Court is updated with identifier {{ param }}",
+      "deleted": "A Club Court is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Club Court {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Court"
+      },
+      "courtCode": "Court Code",
+      "courtName": "Court Name",
+      "status": "Status",
+      "clubCourtType": "Club Court Type",
+      "bookings": "Bookings",
+      "club": "Club"
+    }
+  }
+}

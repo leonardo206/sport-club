@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity ClubManager.
+    -->
+    <changeSet id="20210221092103-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="sc_club_manager"
+                                 constraintName="fk_sc_club_manager_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="club_manager_id"
+                                 baseTableName="sc_club_manager_clubs"
+                                 constraintName="fk_sc_club_manager_clubs_sc_club_manager_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sc_club_manager"/>
+
+        <addForeignKeyConstraint baseColumnNames="clubs_id"
+                                 baseTableName="sc_club_manager_clubs"
+                                 constraintName="fk_sc_club_manager_clubs_clubs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sc_club"/>
+        
+        <addForeignKeyConstraint baseColumnNames="organization_id"
+                                 baseTableName="sc_club_manager"
+                                 constraintName="fk_sc_club_manager_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sc_organization"/>
+
+    </changeSet>
+</databaseChangeLog>

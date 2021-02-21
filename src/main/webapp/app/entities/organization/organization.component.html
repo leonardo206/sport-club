@@ -23,7 +23,6 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="organizationOwnerJhiUserId"><span jhiTranslate="sportClubApp.organization.organizationOwnerJhiUserId">Organization Owner Jhi User Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="organizationName"><span jhiTranslate="sportClubApp.organization.organizationName">Organization Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taxNumber"><span jhiTranslate="sportClubApp.organization.taxNumber">Tax Number</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="status"><span jhiTranslate="sportClubApp.organization.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
@@ -34,10 +33,9 @@
             <tbody>
                 <tr *ngFor="let organization of organizations ;trackBy: trackId">
                     <td><a [routerLink]="['/organization', organization.id, 'view']">{{ organization.id }}</a></td>
-                    <td>{{ organization.organizationOwnerJhiUserId }}</td>
                     <td>{{ organization.organizationName }}</td>
                     <td>{{ organization.taxNumber }}</td>
-                    <td>{{ organization.status }}</td>
+                    <td jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + organization.status }}">{{ organization.status }}</td>
                     <td>
                         {{ organization.userLogin }}
                     </td>

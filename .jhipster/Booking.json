@@ -1,0 +1,48 @@
+{
+  "name": "Booking",
+  "fields": [
+    {
+      "fieldName": "bookingCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "bookingTime",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ActiveInactiveStatus",
+      "fieldValues": "Active,Inactive"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "bookings",
+      "relationshipName": "client",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "clubCourt",
+      "otherEntityRelationshipName": "bookings",
+      "relationshipName": "clubCourt",
+      "otherEntityField": "courtName"
+    }
+  ],
+  "changelogDate": "20210221092703",
+  "entityTableName": "sc_booking",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["SportClub"],
+  "enableEntityAudit": true
+}

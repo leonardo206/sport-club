@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="clubCourt">
+            <h2><span jhiTranslate="sportClubApp.clubCourt.detail.title">Club Court</span> {{ clubCourt.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sportClubApp.clubCourt.courtCode">Court Code</span></dt>
+                <dd>
+                    <span>{{ clubCourt.courtCode }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.clubCourt.courtName">Court Name</span></dt>
+                <dd>
+                    <span>{{ clubCourt.courtName }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.clubCourt.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + clubCourt.status }}">{{ clubCourt.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.clubCourt.clubCourtType">Club Court Type</span></dt>
+                <dd>
+                    <div *ngIf="clubCourt.clubCourtTypeId">
+                        <a [routerLink]="['/club-court-type', clubCourt.clubCourtTypeId, 'view']">{{ clubCourt.clubCourtTypeClubCourtTypeName }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.clubCourt.club">Club</span></dt>
+                <dd>
+                    <div *ngIf="clubCourt.clubId">
+                        <a [routerLink]="['/club', clubCourt.clubId, 'view']">{{ clubCourt.clubClubName }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/club-court', clubCourt.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

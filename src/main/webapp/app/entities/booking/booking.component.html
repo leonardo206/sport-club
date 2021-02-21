@@ -1,0 +1,87 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sportClubApp.booking.home.title">Bookings</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-booking" [routerLink]="['/booking/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="sportClubApp.booking.home.createLabel">
+            Create a new Booking
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="bookings?.length === 0">
+        <span jhiTranslate="sportClubApp.booking.home.notFound">No bookings found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="bookings && bookings.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bookingCode"><span jhiTranslate="sportClubApp.booking.bookingCode">Booking Code</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bookingTime"><span jhiTranslate="sportClubApp.booking.bookingTime">Booking Time</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="sportClubApp.booking.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="clientId"><span jhiTranslate="sportClubApp.booking.client">Client</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="clubCourtCourtName"><span jhiTranslate="sportClubApp.booking.clubCourt">Club Court</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookings ;trackBy: trackId">
+                    <td><a [routerLink]="['/booking', booking.id, 'view']">{{ booking.id }}</a></td>
+                    <td>{{ booking.bookingCode }}</td>
+                    <td>{{ booking.bookingTime | date:'medium' }}</td>
+                    <td jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + booking.status }}">{{ booking.status }}</td>
+                    <td>
+                        <div *ngIf="booking.clientId">
+                            <a [routerLink]="['/client', booking.clientId , 'view']" >{{ booking.clientId }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="booking.clubCourtId">
+                            <a [routerLink]="['/club-court', booking.clubCourtId , 'view']" >{{ booking.clubCourtCourtName }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/booking', booking.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/booking', booking.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(booking)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="bookings && bookings.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

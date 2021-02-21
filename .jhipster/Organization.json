@@ -3,21 +3,28 @@
   "clientRootFolder": "",
   "relationships": [
     {
-      "relationshipName": "user",
-      "otherEntityName": "user",
       "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "organization",
+      "relationshipValidateRules": "required",
+      "relationshipName": "user",
       "otherEntityField": "login",
-      "ownerSide": true,
-      "useJPADerivedIdentifier": false,
-      "otherEntityRelationshipName": "organization"
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "clubManager",
+      "otherEntityRelationshipName": "organization",
+      "relationshipName": "clubManagers"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "club",
+      "otherEntityRelationshipName": "organization",
+      "relationshipName": "clubs"
     }
   ],
   "fields": [
-    {
-      "fieldName": "organizationOwnerJhiUserId",
-      "fieldType": "String",
-      "fieldValidateRules": ["unique"]
-    },
     {
       "fieldName": "organizationName",
       "fieldType": "String",
@@ -31,7 +38,8 @@
     },
     {
       "fieldName": "status",
-      "fieldType": "String"
+      "fieldType": "ActiveInactiveStatus",
+      "fieldValues": "Active,Inactive"
     }
   ],
   "changelogDate": "20210131120848",
@@ -43,5 +51,8 @@
   "readOnly": false,
   "jpaMetamodelFiltering": true,
   "pagination": "pagination",
-  "enableEntityAudit": true
+  "enableEntityAudit": true,
+  "name": "Organization",
+  "embedded": false,
+  "applications": ["SportClub"]
 }

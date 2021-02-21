@@ -33,6 +33,54 @@
                             <span jhiTranslate="global.menu.entities.organization">Organization</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="client" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.client">Client</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="user-details" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.userDetails">User Details</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="club-manager" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.clubManager">Club Manager</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="club-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.clubType">Club Type</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="club" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.club">Club</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="club-court-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.clubCourtType">Club Court Type</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="club-court" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.clubCourt">Club Court</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="booking" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.booking">Booking</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
@@ -78,12 +126,6 @@
                         <a class="dropdown-item" routerLink="admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="admin/entity-audit" routerLinkActive="active" (click)="collapseNavbar()">
-                            <fa-icon icon="list-alt" [fixedWidth]="true"></fa-icon>
-                            <span jhiTranslate="global.menu.admin.entity-audit">Admin Entity Audit</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->

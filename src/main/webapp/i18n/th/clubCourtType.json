@@ -1,0 +1,25 @@
+{
+  "sportClubApp": {
+    "clubCourtType": {
+      "home": {
+        "title": "Club Court Types",
+        "createLabel": "สร้าง Club Court Type",
+        "createOrEditLabel": "สร้างหรือแก้ไข Club Court Type",
+        "notFound": "No Club Court Types found"
+      },
+      "created": "Club Court Type ถูกสร้างด้วย {{ param }}",
+      "updated": "Club Court Type ถูกแก้ไขด้วย {{ param }}",
+      "deleted": "Club Court Type ถูกลบด้วย {{ param }}",
+      "delete": {
+        "question": "คุณต้องการที่จะลบ Club Court Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Club Court Type"
+      },
+      "clubCourtTypeCode": "Club Court Type Code",
+      "clubCourtTypeName": "Club Court Type Name",
+      "clubCourtTypeDescription": "Club Court Type Description",
+      "status": "Status"
+    }
+  }
+}

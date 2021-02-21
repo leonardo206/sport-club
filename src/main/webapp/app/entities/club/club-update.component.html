@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-club-heading" jhiTranslate="sportClubApp.club.home.createOrEditLabel">Create or edit a Club</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sportClubApp.club.clubName" for="field_clubName">Club Name</label>
+                    <input type="text" class="form-control" name="clubName" id="field_clubName"
+                           formControlName="clubName"/>
+                    <div *ngIf="editForm.get('clubName')!.invalid && (editForm.get('clubName')!.dirty || editForm.get('clubName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('clubName')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sportClubApp.club.status" for="field_status">Status</label>
+                    <select class="form-control" name="status" formControlName="status" id="field_status">
+                        <option value="Active">{{ 'sportClubApp.ActiveInactiveStatus.Active' | translate }}</option>
+                        <option value="Inactive">{{ 'sportClubApp.ActiveInactiveStatus.Inactive' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sportClubApp.club.clubType" for="field_clubType">Club Type</label>
+                    <select class="form-control" id="field_clubType" name="clubType" formControlName="clubTypeId">
+                        <option *ngIf="!editForm.get('clubTypeId')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="clubTypeOption.id" *ngFor="let clubTypeOption of clubtypes; trackBy: trackById">{{ clubTypeOption.clubTypeName }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('clubTypeId')!.invalid && (editForm.get('clubTypeId')!.dirty || editForm.get('clubTypeId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('clubTypeId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sportClubApp.club.organization" for="field_organization">Organization</label>
+                    <select class="form-control" id="field_organization" name="organization" formControlName="organizationId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="organizationOption.id" *ngFor="let organizationOption of organizations; trackBy: trackById">{{ organizationOption.organizationName }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

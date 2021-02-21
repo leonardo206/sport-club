@@ -85,12 +85,6 @@ public class OrganizationQueryService extends QueryService<Organization> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Organization_.id));
             }
-            if (criteria.getOrganizationOwnerJhiUserId() != null) {
-                specification =
-                    specification.and(
-                        buildStringSpecification(criteria.getOrganizationOwnerJhiUserId(), Organization_.organizationOwnerJhiUserId)
-                    );
-            }
             if (criteria.getOrganizationName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getOrganizationName(), Organization_.organizationName));
             }
@@ -98,12 +92,27 @@ public class OrganizationQueryService extends QueryService<Organization> {
                 specification = specification.and(buildStringSpecification(criteria.getTaxNumber(), Organization_.taxNumber));
             }
             if (criteria.getStatus() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getStatus(), Organization_.status));
+                specification = specification.and(buildSpecification(criteria.getStatus(), Organization_.status));
             }
             if (criteria.getUserId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getUserId(), root -> root.join(Organization_.user, JoinType.LEFT).get(User_.id))
+                    );
+            }
+            if (criteria.getClubManagersId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getClubManagersId(),
+                            root -> root.join(Organization_.clubManagers, JoinType.LEFT).get(ClubManager_.id)
+                        )
+                    );
+            }
+            if (criteria.getClubsId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getClubsId(), root -> root.join(Organization_.clubs, JoinType.LEFT).get(Club_.id))
                     );
             }
         }

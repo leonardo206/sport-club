@@ -8,8 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mazimao.sportclub.SportClubApp;
 import com.mazimao.sportclub.config.TestSecurityConfiguration;
+import com.mazimao.sportclub.domain.Club;
+import com.mazimao.sportclub.domain.ClubManager;
 import com.mazimao.sportclub.domain.Organization;
 import com.mazimao.sportclub.domain.User;
+import com.mazimao.sportclub.domain.enumeration.ActiveInactiveStatus;
 import com.mazimao.sportclub.repository.OrganizationRepository;
 import com.mazimao.sportclub.service.OrganizationQueryService;
 import com.mazimao.sportclub.service.OrganizationService;
@@ -35,17 +38,14 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class OrganizationResourceIT {
-    private static final String DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID = "AAAAAAAAAA";
-    private static final String UPDATED_ORGANIZATION_OWNER_JHI_USER_ID = "BBBBBBBBBB";
-
     private static final String DEFAULT_ORGANIZATION_NAME = "AAAAAAAAAA";
     private static final String UPDATED_ORGANIZATION_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_TAX_NUMBER = "zij5_4";
-    private static final String UPDATED_TAX_NUMBER = "utVKR551H8 638";
+    private static final String DEFAULT_TAX_NUMBER = "snCk1K_4";
+    private static final String UPDATED_TAX_NUMBER = "wOL89-81";
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final ActiveInactiveStatus DEFAULT_STATUS = ActiveInactiveStatus.Active;
+    private static final ActiveInactiveStatus UPDATED_STATUS = ActiveInactiveStatus.Inactive;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -75,10 +75,14 @@ public class OrganizationResourceIT {
      */
     public static Organization createEntity(EntityManager em) {
         Organization organization = new Organization()
-            .organizationOwnerJhiUserId(DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID)
             .organizationName(DEFAULT_ORGANIZATION_NAME)
             .taxNumber(DEFAULT_TAX_NUMBER)
             .status(DEFAULT_STATUS);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        organization.setUser(user);
         return organization;
     }
 
@@ -90,10 +94,14 @@ public class OrganizationResourceIT {
      */
     public static Organization createUpdatedEntity(EntityManager em) {
         Organization organization = new Organization()
-            .organizationOwnerJhiUserId(UPDATED_ORGANIZATION_OWNER_JHI_USER_ID)
             .organizationName(UPDATED_ORGANIZATION_NAME)
             .taxNumber(UPDATED_TAX_NUMBER)
             .status(UPDATED_STATUS);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        organization.setUser(user);
         return organization;
     }
 
@@ -121,7 +129,6 @@ public class OrganizationResourceIT {
         List<Organization> organizationList = organizationRepository.findAll();
         assertThat(organizationList).hasSize(databaseSizeBeforeCreate + 1);
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
-        assertThat(testOrganization.getOrganizationOwnerJhiUserId()).isEqualTo(DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID);
         assertThat(testOrganization.getOrganizationName()).isEqualTo(DEFAULT_ORGANIZATION_NAME);
         assertThat(testOrganization.getTaxNumber()).isEqualTo(DEFAULT_TAX_NUMBER);
         assertThat(testOrganization.getStatus()).isEqualTo(DEFAULT_STATUS);
@@ -209,10 +216,9 @@ public class OrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(organization.getId().intValue())))
-            .andExpect(jsonPath("$.[*].organizationOwnerJhiUserId").value(hasItem(DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID)))
             .andExpect(jsonPath("$.[*].organizationName").value(hasItem(DEFAULT_ORGANIZATION_NAME)))
             .andExpect(jsonPath("$.[*].taxNumber").value(hasItem(DEFAULT_TAX_NUMBER)))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     @Test
@@ -227,10 +233,9 @@ public class OrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(organization.getId().intValue()))
-            .andExpect(jsonPath("$.organizationOwnerJhiUserId").value(DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID))
             .andExpect(jsonPath("$.organizationName").value(DEFAULT_ORGANIZATION_NAME))
             .andExpect(jsonPath("$.taxNumber").value(DEFAULT_TAX_NUMBER))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -249,86 +254,6 @@ public class OrganizationResourceIT {
 
         defaultOrganizationShouldBeFound("id.lessThanOrEqual=" + id);
         defaultOrganizationShouldNotBeFound("id.lessThan=" + id);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdIsEqualToSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId equals to DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldBeFound("organizationOwnerJhiUserId.equals=" + DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID);
-
-        // Get all the organizationList where organizationOwnerJhiUserId equals to UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.equals=" + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId not equals to DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.notEquals=" + DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID);
-
-        // Get all the organizationList where organizationOwnerJhiUserId not equals to UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldBeFound("organizationOwnerJhiUserId.notEquals=" + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdIsInShouldWork() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId in DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID or UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldBeFound(
-            "organizationOwnerJhiUserId.in=" + DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID + "," + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        );
-
-        // Get all the organizationList where organizationOwnerJhiUserId equals to UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.in=" + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId is not null
-        defaultOrganizationShouldBeFound("organizationOwnerJhiUserId.specified=true");
-
-        // Get all the organizationList where organizationOwnerJhiUserId is null
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdContainsSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId contains DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldBeFound("organizationOwnerJhiUserId.contains=" + DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID);
-
-        // Get all the organizationList where organizationOwnerJhiUserId contains UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.contains=" + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByOrganizationOwnerJhiUserIdNotContainsSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where organizationOwnerJhiUserId does not contain DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldNotBeFound("organizationOwnerJhiUserId.doesNotContain=" + DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID);
-
-        // Get all the organizationList where organizationOwnerJhiUserId does not contain UPDATED_ORGANIZATION_OWNER_JHI_USER_ID
-        defaultOrganizationShouldBeFound("organizationOwnerJhiUserId.doesNotContain=" + UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
     }
 
     @Test
@@ -541,39 +466,9 @@ public class OrganizationResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrganizationsByStatusContainsSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where status contains DEFAULT_STATUS
-        defaultOrganizationShouldBeFound("status.contains=" + DEFAULT_STATUS);
-
-        // Get all the organizationList where status contains UPDATED_STATUS
-        defaultOrganizationShouldNotBeFound("status.contains=" + UPDATED_STATUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrganizationsByStatusNotContainsSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-
-        // Get all the organizationList where status does not contain DEFAULT_STATUS
-        defaultOrganizationShouldNotBeFound("status.doesNotContain=" + DEFAULT_STATUS);
-
-        // Get all the organizationList where status does not contain UPDATED_STATUS
-        defaultOrganizationShouldBeFound("status.doesNotContain=" + UPDATED_STATUS);
-    }
-
-    @Test
-    @Transactional
     public void getAllOrganizationsByUserIsEqualToSomething() throws Exception {
-        // Initialize the database
-        organizationRepository.saveAndFlush(organization);
-        User user = UserResourceIT.createEntity(em);
-        em.persist(user);
-        em.flush();
-        organization.setUser(user);
+        // Get already existing entity
+        User user = organization.getUser();
         organizationRepository.saveAndFlush(organization);
         String userId = user.getId();
 
@@ -582,6 +477,44 @@ public class OrganizationResourceIT {
 
         // Get all the organizationList where user equals to userId + 1
         defaultOrganizationShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrganizationsByClubManagersIsEqualToSomething() throws Exception {
+        // Initialize the database
+        organizationRepository.saveAndFlush(organization);
+        ClubManager clubManagers = ClubManagerResourceIT.createEntity(em);
+        em.persist(clubManagers);
+        em.flush();
+        organization.addClubManagers(clubManagers);
+        organizationRepository.saveAndFlush(organization);
+        Long clubManagersId = clubManagers.getId();
+
+        // Get all the organizationList where clubManagers equals to clubManagersId
+        defaultOrganizationShouldBeFound("clubManagersId.equals=" + clubManagersId);
+
+        // Get all the organizationList where clubManagers equals to clubManagersId + 1
+        defaultOrganizationShouldNotBeFound("clubManagersId.equals=" + (clubManagersId + 1));
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrganizationsByClubsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        organizationRepository.saveAndFlush(organization);
+        Club clubs = ClubResourceIT.createEntity(em);
+        em.persist(clubs);
+        em.flush();
+        organization.addClubs(clubs);
+        organizationRepository.saveAndFlush(organization);
+        Long clubsId = clubs.getId();
+
+        // Get all the organizationList where clubs equals to clubsId
+        defaultOrganizationShouldBeFound("clubsId.equals=" + clubsId);
+
+        // Get all the organizationList where clubs equals to clubsId + 1
+        defaultOrganizationShouldNotBeFound("clubsId.equals=" + (clubsId + 1));
     }
 
     /**
@@ -593,10 +526,9 @@ public class OrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(organization.getId().intValue())))
-            .andExpect(jsonPath("$.[*].organizationOwnerJhiUserId").value(hasItem(DEFAULT_ORGANIZATION_OWNER_JHI_USER_ID)))
             .andExpect(jsonPath("$.[*].organizationName").value(hasItem(DEFAULT_ORGANIZATION_NAME)))
             .andExpect(jsonPath("$.[*].taxNumber").value(hasItem(DEFAULT_TAX_NUMBER)))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
 
         // Check, that the count call also returns 1
         restOrganizationMockMvc
@@ -644,11 +576,7 @@ public class OrganizationResourceIT {
         Organization updatedOrganization = organizationRepository.findById(organization.getId()).get();
         // Disconnect from session so that the updates on updatedOrganization are not directly saved in db
         em.detach(updatedOrganization);
-        updatedOrganization
-            .organizationOwnerJhiUserId(UPDATED_ORGANIZATION_OWNER_JHI_USER_ID)
-            .organizationName(UPDATED_ORGANIZATION_NAME)
-            .taxNumber(UPDATED_TAX_NUMBER)
-            .status(UPDATED_STATUS);
+        updatedOrganization.organizationName(UPDATED_ORGANIZATION_NAME).taxNumber(UPDATED_TAX_NUMBER).status(UPDATED_STATUS);
         OrganizationDTO organizationDTO = organizationMapper.toDto(updatedOrganization);
 
         restOrganizationMockMvc
@@ -664,7 +592,6 @@ public class OrganizationResourceIT {
         List<Organization> organizationList = organizationRepository.findAll();
         assertThat(organizationList).hasSize(databaseSizeBeforeUpdate);
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
-        assertThat(testOrganization.getOrganizationOwnerJhiUserId()).isEqualTo(UPDATED_ORGANIZATION_OWNER_JHI_USER_ID);
         assertThat(testOrganization.getOrganizationName()).isEqualTo(UPDATED_ORGANIZATION_NAME);
         assertThat(testOrganization.getTaxNumber()).isEqualTo(UPDATED_TAX_NUMBER);
         assertThat(testOrganization.getStatus()).isEqualTo(UPDATED_STATUS);

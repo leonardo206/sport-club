@@ -1,0 +1,38 @@
+{
+  "name": "ClubType",
+  "fields": [
+    {
+      "fieldName": "clubTypeCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "clubTypeName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "clubTypeDescription",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ActiveInactiveStatus",
+      "fieldValues": "Active,Inactive"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20210221092303",
+  "entityTableName": "sc_club_type",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["SportClub"],
+  "enableEntityAudit": true
+}

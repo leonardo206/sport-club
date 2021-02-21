@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="booking">
+            <h2><span jhiTranslate="sportClubApp.booking.detail.title">Booking</span> {{ booking.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sportClubApp.booking.bookingCode">Booking Code</span></dt>
+                <dd>
+                    <span>{{ booking.bookingCode }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.booking.bookingTime">Booking Time</span></dt>
+                <dd>
+                    <span>{{ booking.bookingTime }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.booking.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'sportClubApp.ActiveInactiveStatus.' + booking.status }}">{{ booking.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.booking.client">Client</span></dt>
+                <dd>
+                    <div *ngIf="booking.clientId">
+                        <a [routerLink]="['/client', booking.clientId, 'view']">{{ booking.clientId }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sportClubApp.booking.clubCourt">Club Court</span></dt>
+                <dd>
+                    <div *ngIf="booking.clubCourtId">
+                        <a [routerLink]="['/club-court', booking.clubCourtId, 'view']">{{ booking.clubCourtCourtName }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/booking', booking.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

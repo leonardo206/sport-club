@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity ClubCourt.
+    -->
+    <changeSet id="20210221092603-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="club_court_type_id"
+                                 baseTableName="sc_club_court"
+                                 constraintName="fk_sc_club_court_club_court_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sc_club_court_type"/>
+
+        <addForeignKeyConstraint baseColumnNames="club_id"
+                                 baseTableName="sc_club_court"
+                                 constraintName="fk_sc_club_court_club_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sc_club"/>
+
+    </changeSet>
+</databaseChangeLog>
