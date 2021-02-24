@@ -1,10 +1,19 @@
 package com.mazimao.sportclub.web.rest;
 
+import com.mazimao.sportclub.domain.ClubManager;
+import com.mazimao.sportclub.domain.User;
+import com.mazimao.sportclub.security.AuthoritiesConstants;
+import com.mazimao.sportclub.security.SecurityUtils;
+import com.mazimao.sportclub.service.ClubManagerService;
 import com.mazimao.sportclub.service.OrganizationQueryService;
 import com.mazimao.sportclub.service.OrganizationService;
+import com.mazimao.sportclub.service.UserService;
+import com.mazimao.sportclub.service.dto.ClubManagerDTO;
 import com.mazimao.sportclub.service.dto.OrganizationCriteria;
 import com.mazimao.sportclub.service.dto.OrganizationDTO;
+import com.mazimao.sportclub.service.dto.UserDTO;
 import com.mazimao.sportclub.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -21,6 +30,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -54,6 +65,7 @@ public class OrganizationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/organizations")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<OrganizationDTO> createOrganization(@Valid @RequestBody OrganizationDTO organizationDTO)
         throws URISyntaxException {
         log.debug("REST request to save Organization : {}", organizationDTO);
@@ -77,17 +89,27 @@ public class OrganizationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/organizations")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<OrganizationDTO> updateOrganization(@Valid @RequestBody OrganizationDTO organizationDTO)
         throws URISyntaxException {
         log.debug("REST request to update Organization : {}", organizationDTO);
         if (organizationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        OrganizationDTO result = organizationService.save(organizationDTO);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, organizationDTO.getId().toString()))
-            .body(result);
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        if (
+            userLogin.isPresent() &&
+            userLogin.get().equals(organizationDTO.getUserLogin()) ||
+            SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ADMIN)
+        ) {
+            OrganizationDTO result = organizationService.save(organizationDTO);
+            return ResponseEntity
+                .ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, organizationDTO.getId().toString()))
+                .body(result);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -98,6 +120,7 @@ public class OrganizationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of organizations in body.
      */
     @GetMapping("/organizations")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<List<OrganizationDTO>> getAllOrganizations(OrganizationCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Organizations by criteria: {}", criteria);
         Page<OrganizationDTO> page = organizationQueryService.findByCriteria(criteria, pageable);
@@ -112,6 +135,7 @@ public class OrganizationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
     @GetMapping("/organizations/count")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<Long> countOrganizations(OrganizationCriteria criteria) {
         log.debug("REST request to count Organizations by criteria: {}", criteria);
         return ResponseEntity.ok().body(organizationQueryService.countByCriteria(criteria));
@@ -124,10 +148,21 @@ public class OrganizationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the organizationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/organizations/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<OrganizationDTO> getOrganization(@PathVariable Long id) {
         log.debug("REST request to get Organization : {}", id);
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<OrganizationDTO> organizationDTO = organizationService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(organizationDTO);
+        if (
+            organizationDTO.isPresent() &&
+            userLogin.isPresent() &&
+            userLogin.get().equals(organizationDTO.get().getUserLogin()) ||
+            SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ADMIN)
+        ) {
+            return ResponseUtil.wrapOrNotFound(organizationDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -137,12 +172,24 @@ public class OrganizationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/organizations/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")" + "|| hasRole(\"" + AuthoritiesConstants.ORGANIZATOR + "\")")
     public ResponseEntity<Void> deleteOrganization(@PathVariable Long id) {
         log.debug("REST request to delete Organization : {}", id);
-        organizationService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<OrganizationDTO> organizationDTO = organizationService.findOne(id);
+        if (
+            organizationDTO.isPresent() &&
+            userLogin.isPresent() &&
+            userLogin.get().equals(organizationDTO.get().getUserLogin()) ||
+            SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ADMIN)
+        ) {
+            organizationService.delete(id);
+            return ResponseEntity
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

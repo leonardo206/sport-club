@@ -39,7 +39,7 @@ export const organizationRoute: Routes = [
     path: '',
     component: OrganizationComponent,
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.ORGANIZATOR],
       defaultSort: 'id,asc',
       pageTitle: 'sportClubApp.organization.home.title',
     },
@@ -52,7 +52,7 @@ export const organizationRoute: Routes = [
       organization: OrganizationResolve,
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.ORGANIZATOR],
       pageTitle: 'sportClubApp.organization.home.title',
     },
     canActivate: [UserRouteAccessService],
@@ -64,7 +64,7 @@ export const organizationRoute: Routes = [
       organization: OrganizationResolve,
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.ORGANIZATOR],
       pageTitle: 'sportClubApp.organization.home.title',
     },
     canActivate: [UserRouteAccessService],
@@ -76,7 +76,7 @@ export const organizationRoute: Routes = [
       organization: OrganizationResolve,
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.ORGANIZATOR],
       pageTitle: 'sportClubApp.organization.home.title',
     },
     canActivate: [UserRouteAccessService],

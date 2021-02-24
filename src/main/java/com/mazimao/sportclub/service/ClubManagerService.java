@@ -18,6 +18,14 @@ public interface ClubManagerService {
     ClubManagerDTO save(ClubManagerDTO clubManagerDTO);
 
     /**
+     * Get clubManagers by userId.
+     *
+     * @param id the user id.
+     * @return the list of entities.
+     */
+    Optional<ClubManagerDTO> findByUserId(String id);
+
+    /**
      * Get all the clubManagers.
      *
      * @param pageable the pagination information.

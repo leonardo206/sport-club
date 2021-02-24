@@ -47,9 +47,23 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<OrganizationDTO> findAllByUser(String userId, Pageable pageable) {
+        log.debug("Request to get all Organizations by User");
+        return organizationRepository.findAllByUserId(userId, pageable).map(organizationMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<OrganizationDTO> findOne(Long id) {
         log.debug("Request to get Organization : {}", id);
         return organizationRepository.findById(id).map(organizationMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<OrganizationDTO> findOneByUser(Long id, String userId) {
+        log.debug("Request to get Organization : {}", id);
+        return organizationRepository.findOneByUserId(id, userId).map(organizationMapper::toDto);
     }
 
     @Override

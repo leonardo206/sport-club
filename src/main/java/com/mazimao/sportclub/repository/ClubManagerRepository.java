@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ClubManagerRepository extends JpaRepository<ClubManager, Long>, JpaSpecificationExecutor<ClubManager> {
+    Optional<ClubManager> findByUserId(String id);
+
     @Query(
         value = "select distinct clubManager from ClubManager clubManager left join fetch clubManager.clubs",
         countQuery = "select count(distinct clubManager) from ClubManager clubManager"

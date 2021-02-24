@@ -3,11 +3,17 @@ package com.mazimao.sportclub.service;
 import com.mazimao.sportclub.domain.*; // for static metamodels
 import com.mazimao.sportclub.domain.Organization;
 import com.mazimao.sportclub.repository.OrganizationRepository;
+import com.mazimao.sportclub.security.AuthoritiesConstants;
+import com.mazimao.sportclub.security.SecurityFilter;
+import com.mazimao.sportclub.security.SecurityUtils;
 import com.mazimao.sportclub.service.dto.OrganizationCriteria;
 import com.mazimao.sportclub.service.dto.OrganizationDTO;
+import com.mazimao.sportclub.service.dto.UserDTO;
 import com.mazimao.sportclub.service.mapper.OrganizationMapper;
 import io.github.jhipster.service.QueryService;
+import io.github.jhipster.service.filter.StringFilter;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +31,27 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(readOnly = true)
-public class OrganizationQueryService extends QueryService<Organization> {
+public class OrganizationQueryService extends QueryService<Organization> implements SecurityFilter<OrganizationCriteria> {
     private final Logger log = LoggerFactory.getLogger(OrganizationQueryService.class);
 
     private final OrganizationRepository organizationRepository;
 
     private final OrganizationMapper organizationMapper;
 
-    public OrganizationQueryService(OrganizationRepository organizationRepository, OrganizationMapper organizationMapper) {
+    private final UserService userService;
+
+    private final ClubManagerService clubManagerService;
+
+    public OrganizationQueryService(
+        OrganizationRepository organizationRepository,
+        OrganizationMapper organizationMapper,
+        UserService userService,
+        ClubManagerService clubManagerService
+    ) {
         this.organizationRepository = organizationRepository;
         this.organizationMapper = organizationMapper;
+        this.userService = userService;
+        this.clubManagerService = clubManagerService;
     }
 
     /**
@@ -80,6 +97,7 @@ public class OrganizationQueryService extends QueryService<Organization> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<Organization> createSpecification(OrganizationCriteria criteria) {
+        criteria = setSecurityCriteria(criteria, SecurityUtils.getAuthorities());
         Specification<Organization> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
@@ -117,5 +135,32 @@ public class OrganizationQueryService extends QueryService<Organization> {
             }
         }
         return specification;
+    }
+
+    @Override
+    public OrganizationCriteria setSecurityCriteria(OrganizationCriteria organizationCriteria, List<String> authorities) {
+        StringFilter stringFilter = new StringFilter();
+
+        if (authorities.contains(AuthoritiesConstants.ORGANIZATOR)) {
+            Optional<UserDTO> userLogin = userService.getUserByLogin(SecurityUtils.getCurrentUserLogin().get());
+            if (userLogin.isPresent()) {
+                stringFilter.setEquals(userLogin.get().getId());
+                organizationCriteria.setUserId(stringFilter);
+            }
+        }
+
+        // TODO: 2/24/2021 for the time being CLUB_MANAGER cant access organization
+        /*
+
+         else if (authorities.contains(AuthoritiesConstants.CLUB_MANAGER)) {
+            Optional<ClubManagerDTO> clubManager = clubManagerService.findByUserId(SecurityUtils.getCurrentUserId());
+            if (clubManager.isPresent()) {
+                stringFilter.setEquals(clubManager.get().getUserId());
+                organizationCriteria.setUserId(stringFilter);
+            }
+
+        }*/
+
+        return organizationCriteria;
     }
 }

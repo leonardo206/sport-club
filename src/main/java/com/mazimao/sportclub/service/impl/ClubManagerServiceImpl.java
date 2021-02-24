@@ -40,6 +40,13 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<ClubManagerDTO> findByUserId(String id) {
+        log.debug("Request to get all ClubManagers");
+        return clubManagerRepository.findByUserId(id).map(clubManagerMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<ClubManagerDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ClubManagers");
         return clubManagerRepository.findAll(pageable).map(clubManagerMapper::toDto);
