@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO extends AbstractAuditingDTO {
     private String id;
 
     @NotBlank

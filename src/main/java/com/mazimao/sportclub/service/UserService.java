@@ -5,8 +5,10 @@ import com.mazimao.sportclub.domain.Authority;
 import com.mazimao.sportclub.domain.User;
 import com.mazimao.sportclub.repository.AuthorityRepository;
 import com.mazimao.sportclub.repository.UserRepository;
+import com.mazimao.sportclub.security.AuthoritiesConstants;
 import com.mazimao.sportclub.security.SecurityUtils;
 import com.mazimao.sportclub.service.dto.UserDTO;
+import com.mazimao.sportclub.service.mapper.UserMapper;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,9 +35,12 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository) {
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -63,6 +68,41 @@ public class UserService {
                     log.debug("Changed Information for User: {}", user);
                 }
             );
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllManagedUsersByAuthorities(Pageable pageable) {
+        List<String> authoritiesList = new ArrayList<>();
+
+        if (SecurityUtils.getAuthorities().contains(AuthoritiesConstants.CLIENT)) {
+            authoritiesList.add(AuthoritiesConstants.CLIENT);
+        }
+
+        if (SecurityUtils.getAuthorities().contains(AuthoritiesConstants.CLUB_MANAGER)) {
+            authoritiesList.add(AuthoritiesConstants.CLUB_MANAGER);
+            authoritiesList.add(AuthoritiesConstants.CLIENT);
+        }
+
+        if (SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ORGANIZATOR)) {
+            authoritiesList.add(AuthoritiesConstants.ORGANIZATOR);
+            authoritiesList.add(AuthoritiesConstants.CLUB_MANAGER);
+            authoritiesList.add(AuthoritiesConstants.CLIENT);
+        }
+
+        if (SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ADMIN)) {
+            authoritiesList.add(AuthoritiesConstants.ADMIN);
+            authoritiesList.add(AuthoritiesConstants.ORGANIZATOR);
+            authoritiesList.add(AuthoritiesConstants.CLUB_MANAGER);
+            authoritiesList.add(AuthoritiesConstants.CLIENT);
+        }
+
+        Set<Authority> authorities = new HashSet<>(authorityRepository.findAllByNameIn(authoritiesList));
+        return userRepository.findAllByAuthoritiesIn(pageable, authorities).map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsersInOrganization(String organizationId) {
+        return userMapper.usersToUserDTOs(userRepository.findAllInOrganization(organizationId));
     }
 
     @Transactional(readOnly = true)

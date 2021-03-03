@@ -140,7 +140,6 @@ public class OrganizationQueryService extends QueryService<Organization> impleme
     @Override
     public OrganizationCriteria setSecurityCriteria(OrganizationCriteria organizationCriteria, List<String> authorities) {
         StringFilter stringFilter = new StringFilter();
-
         if (authorities.contains(AuthoritiesConstants.ORGANIZATOR)) {
             Optional<UserDTO> userLogin = userService.getUserByLogin(SecurityUtils.getCurrentUserLogin().get());
             if (userLogin.isPresent()) {
@@ -148,7 +147,6 @@ public class OrganizationQueryService extends QueryService<Organization> impleme
                 organizationCriteria.setUserId(stringFilter);
             }
         }
-
         // TODO: 2/24/2021 for the time being CLUB_MANAGER cant access organization
         /*
 
@@ -160,7 +158,6 @@ public class OrganizationQueryService extends QueryService<Organization> impleme
             }
 
         }*/
-
         return organizationCriteria;
     }
 }

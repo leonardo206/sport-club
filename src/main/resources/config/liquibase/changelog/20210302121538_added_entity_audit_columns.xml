@@ -1,0 +1,305 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="leonardopro (generated)" id="1614687359940-21">
+        <createTable tableName="jhi_entity_audit_event">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_entity_audit_eventPK"/>
+            </column>
+            <column name="action" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commit_version" type="INT"/>
+            <column name="entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_value" type="LONGTEXT"/>
+            <column name="modified_by" type="VARCHAR(100)"/>
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-22">
+        <addColumn tableName="jhi_authority">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-23">
+        <addColumn tableName="sc_booking">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-24">
+        <addColumn tableName="sc_client">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-25">
+        <addColumn tableName="sc_club">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-26">
+        <addColumn tableName="sc_club_court">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-27">
+        <addColumn tableName="sc_club_court_type">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-28">
+        <addColumn tableName="sc_club_manager">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-29">
+        <addColumn tableName="sc_club_type">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-30">
+        <addColumn tableName="sc_organization">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-31">
+        <addColumn tableName="sc_user_details">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-32">
+        <addColumn tableName="jhi_authority">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-33">
+        <addColumn tableName="sc_booking">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-34">
+        <addColumn tableName="sc_client">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-35">
+        <addColumn tableName="sc_club">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-36">
+        <addColumn tableName="sc_club_court">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-37">
+        <addColumn tableName="sc_club_court_type">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-38">
+        <addColumn tableName="sc_club_manager">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-39">
+        <addColumn tableName="sc_club_type">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-40">
+        <addColumn tableName="sc_organization">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-41">
+        <addColumn tableName="sc_user_details">
+            <column name="created_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-42">
+        <addColumn tableName="jhi_authority">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-43">
+        <addColumn tableName="sc_booking">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-44">
+        <addColumn tableName="sc_client">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-45">
+        <addColumn tableName="sc_club">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-46">
+        <addColumn tableName="sc_club_court">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-47">
+        <addColumn tableName="sc_club_court_type">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-48">
+        <addColumn tableName="sc_club_manager">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-49">
+        <addColumn tableName="sc_club_type">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-50">
+        <addColumn tableName="sc_organization">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-51">
+        <addColumn tableName="sc_user_details">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-52">
+        <addColumn tableName="jhi_authority">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-53">
+        <addColumn tableName="sc_booking">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-54">
+        <addColumn tableName="sc_client">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-55">
+        <addColumn tableName="sc_club">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-56">
+        <addColumn tableName="sc_club_court">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-57">
+        <addColumn tableName="sc_club_court_type">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-58">
+        <addColumn tableName="sc_club_manager">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-59">
+        <addColumn tableName="sc_club_type">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-60">
+        <addColumn tableName="sc_organization">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-61">
+        <addColumn tableName="sc_user_details">
+            <column name="last_modified_date" type="datetime(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-1">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="club_court_type_description" tableName="sc_club_court_type"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-2">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="description" tableName="sc_user_details"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-3">
+        <dropDefaultValue columnDataType="varchar(254)" columnName="email" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-4">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="event_type" tableName="jhi_persistent_audit_event"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-5">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="first_name" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-6">
+        <dropDefaultValue columnDataType="varchar(256)" columnName="image_url" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-7">
+        <dropDefaultValue columnDataType="varchar(10)" columnName="lang_key" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-8">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="last_modified_by" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-9">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="last_name" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-10">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="profile_pic_content_type" tableName="sc_user_details"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-11">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_booking"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-12">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_client"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-13">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_club"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-14">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_club_court"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-15">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_club_court_type"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-16">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_club_manager"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-17">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_club_type"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-18">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_organization"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-19">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="status" tableName="sc_user_details"/>
+    </changeSet>
+    <changeSet author="leonardopro (generated)" id="1614687359940-20">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="value" tableName="jhi_persistent_audit_evt_data"/>
+    </changeSet>
+</databaseChangeLog>

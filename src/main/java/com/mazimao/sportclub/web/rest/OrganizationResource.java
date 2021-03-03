@@ -1,19 +1,15 @@
 package com.mazimao.sportclub.web.rest;
 
-import com.mazimao.sportclub.domain.ClubManager;
-import com.mazimao.sportclub.domain.User;
 import com.mazimao.sportclub.security.AuthoritiesConstants;
 import com.mazimao.sportclub.security.SecurityUtils;
-import com.mazimao.sportclub.service.ClubManagerService;
 import com.mazimao.sportclub.service.OrganizationQueryService;
 import com.mazimao.sportclub.service.OrganizationService;
-import com.mazimao.sportclub.service.UserService;
-import com.mazimao.sportclub.service.dto.ClubManagerDTO;
 import com.mazimao.sportclub.service.dto.OrganizationCriteria;
 import com.mazimao.sportclub.service.dto.OrganizationDTO;
-import com.mazimao.sportclub.service.dto.UserDTO;
+import com.mazimao.sportclub.service.mapper.OrganizationMapper;
 import com.mazimao.sportclub.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.service.filter.StringFilter;
+import com.mazimao.sportclub.web.rest.errors.ForbiddenAlertException;
+import com.mazimao.sportclub.web.rest.errors.UniqueKeyViolationAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -25,13 +21,14 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -52,7 +49,11 @@ public class OrganizationResource {
 
     private final OrganizationQueryService organizationQueryService;
 
-    public OrganizationResource(OrganizationService organizationService, OrganizationQueryService organizationQueryService) {
+    public OrganizationResource(
+        OrganizationService organizationService,
+        OrganizationQueryService organizationQueryService,
+        OrganizationMapper organizationMapper
+    ) {
         this.organizationService = organizationService;
         this.organizationQueryService = organizationQueryService;
     }
@@ -72,11 +73,15 @@ public class OrganizationResource {
         if (organizationDTO.getId() != null) {
             throw new BadRequestAlertException("A new organization cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OrganizationDTO result = organizationService.save(organizationDTO);
-        return ResponseEntity
-            .created(new URI("/api/organizations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        try {
+            OrganizationDTO result = organizationService.save(organizationDTO);
+            return ResponseEntity
+                .created(new URI("/api/organizations/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        } catch (DataAccessException dataAccessEx) {
+            throw new UniqueKeyViolationAlertException("Name already exist", ENTITY_NAME, "existingName");
+        }
     }
 
     /**
@@ -96,10 +101,12 @@ public class OrganizationResource {
         if (organizationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        Optional<OrganizationDTO> organization = organizationService.findOne(organizationDTO.getId());
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         if (
             userLogin.isPresent() &&
-            userLogin.get().equals(organizationDTO.getUserLogin()) ||
+            organization.isPresent() &&
+            userLogin.get().equals(organization.get().getUserLogin()) ||
             SecurityUtils.getAuthorities().contains(AuthoritiesConstants.ADMIN)
         ) {
             OrganizationDTO result = organizationService.save(organizationDTO);
@@ -108,7 +115,7 @@ public class OrganizationResource {
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, organizationDTO.getId().toString()))
                 .body(result);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ForbiddenAlertException("You dont have permissions", ENTITY_NAME, "forbidden");
         }
     }
 

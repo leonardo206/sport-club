@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "sc_club_type")
-public class ClubType implements Serializable {
+public class ClubType extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

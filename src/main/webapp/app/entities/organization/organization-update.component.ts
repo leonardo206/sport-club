@@ -37,7 +37,9 @@ export class OrganizationUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ organization }) => {
       this.updateForm(organization);
 
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+      this.userService
+        .query({ 'organizationId.notEquals': this.editForm.get('id')?.value })
+        .subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }
 

@@ -1,6 +1,7 @@
 package com.mazimao.sportclub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mazimao.sportclub.config.Constants;
 import java.io.Serializable;
 import java.util.HashSet;

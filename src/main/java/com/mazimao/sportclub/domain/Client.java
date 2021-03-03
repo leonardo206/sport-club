@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "sc_client")
-public class Client implements Serializable {
+public class Client extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

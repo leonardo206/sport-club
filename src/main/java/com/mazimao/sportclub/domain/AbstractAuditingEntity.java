@@ -1,6 +1,7 @@
 package com.mazimao.sportclub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mazimao.sportclub.config.audit.EntityAuditEventListener;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * last modified by attributes.
  */
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({ AuditingEntityListener.class, EntityAuditEventListener.class })
 public abstract class AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

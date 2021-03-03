@@ -2,16 +2,18 @@ package com.mazimao.sportclub.web.rest;
 
 import com.mazimao.sportclub.config.Constants;
 import com.mazimao.sportclub.security.AuthoritiesConstants;
+import com.mazimao.sportclub.service.UserQueryService;
 import com.mazimao.sportclub.service.UserService;
-import com.mazimao.sportclub.service.dto.UserDTO;
-import io.github.jhipster.web.util.HeaderUtil;
+import com.mazimao.sportclub.service.dto.*;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,25 +51,66 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UserResource {
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
+    private static final String ENTITY_NAME = "user";
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
     private final UserService userService;
 
-    public UserResource(UserService userService) {
+    private final UserQueryService userQueryService;
+
+    public UserResource(UserService userService, UserQueryService userQueryService) {
         this.userService = userService;
+        this.userQueryService = userQueryService;
     }
+
+    /*    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
+        final Page<UserDTO> page = userService.getAllManagedUsersByAuthorities(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }*/
 
     /**
      * {@code GET /users} : get all users.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
+    public ResponseEntity<List<UserDTO>> getAllUsersByCriteria(UserCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get User by criteria: {}", criteria);
+        List<UserDTO> listFilteredUsers = userService.getAllManagedUsersByAuthorities(pageable).toList();
+        if (criteria != null) {
+            //in case we call from organization we use organization notIn id
+            listFilteredUsers = userQueryService.findByCriteria(criteria, pageable).filter(listFilteredUsers::contains).toList();
+        }
+        Page<UserDTO> page = new PageImpl<>(listFilteredUsers);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET /users/organization} : get all users not in the given organization.
+     *
+     * @param pageable the pagination information.
+     * @param organization the organization.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
+     */
+    @GetMapping("/users/organization/{organization}")
+    public ResponseEntity<List<UserDTO>> getAllUsersNotInOrganization(
+        Pageable pageable,
+        @PathVariable OrganizationDTO organization,
+        @RequestParam(name = "not-in", required = false) Boolean isNotIn
+    ) {
+        List<UserDTO> userList = userService.getAllUsersInOrganization(organization.getUserId());
+        final Page<UserDTO> page = userService.getAllManagedUsersByAuthorities(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            new PageImpl<>(page.get().filter(userList::contains).collect(Collectors.toList()))
+        );
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -87,6 +130,7 @@ public class UserResource {
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);

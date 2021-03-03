@@ -1,6 +1,7 @@
 package com.mazimao.sportclub.service;
 
 import com.mazimao.sportclub.service.dto.OrganizationDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,13 @@ public interface OrganizationService {
     /**
      * Get all the organizations.
      *
+     * @return the list of entities.
+     */
+    List<OrganizationDTO> findAll();
+
+    /**
+     * Get all the organizations.
+     *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
@@ -28,10 +36,10 @@ public interface OrganizationService {
     /**
      * Get all the organizations of a user.
      *
-     * @param pageable the pagination information.
+     * @param userId the id of the user.
      * @return the list of entities.
      */
-    Page<OrganizationDTO> findAllByUser(String userId, Pageable pageable);
+    List<OrganizationDTO> findAllByUser(String userId);
 
     /**
      * Get the "id" organization.
@@ -42,6 +50,14 @@ public interface OrganizationService {
     Optional<OrganizationDTO> findOne(Long id);
 
     /**
+     * Get by name
+     *
+     * @param name the name of the entity.
+     * @return the entity.
+     */
+    Optional<OrganizationDTO> findOneByName(String name);
+
+    /**
      * Get the organization by id and userid.
      *
      * @param id the id of the entity.
@@ -49,6 +65,14 @@ public interface OrganizationService {
      * @return the entity.
      */
     Optional<OrganizationDTO> findOneByUser(Long id, String userId);
+
+    /**
+     * Get the organization by userid.
+     *
+     * @param userId the id of the user.
+     * @return the entity.
+     */
+    Optional<OrganizationDTO> findByUser(String userId);
 
     /**
      * Delete the "id" organization.

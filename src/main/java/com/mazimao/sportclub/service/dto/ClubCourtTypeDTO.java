@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 /**
  * A DTO for the {@link com.mazimao.sportclub.domain.ClubCourtType} entity.
  */
-public class ClubCourtTypeDTO implements Serializable {
+public class ClubCourtTypeDTO extends AbstractAuditingDTO implements Serializable {
     private Long id;
 
     @NotNull
