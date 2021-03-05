@@ -71,7 +71,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllManagedUsersByAuthorities(Pageable pageable) {
+    public List<UserDTO> getAllManagedUsersByAuthorities() {
         List<String> authoritiesList = new ArrayList<>();
 
         if (SecurityUtils.getAuthorities().contains(AuthoritiesConstants.CLIENT)) {
@@ -97,12 +97,12 @@ public class UserService {
         }
 
         Set<Authority> authorities = new HashSet<>(authorityRepository.findAllByNameIn(authoritiesList));
-        return userRepository.findAllByAuthoritiesIn(pageable, authorities).map(UserDTO::new);
+        return userMapper.usersToUserDTOs(userRepository.findAllByAuthoritiesIn(authorities));
     }
 
     @Transactional(readOnly = true)
-    public List<UserDTO> getAllUsersInOrganization(String organizationId) {
-        return userMapper.usersToUserDTOs(userRepository.findAllInOrganization(organizationId));
+    public List<UserDTO> getAllUsersInOrganization() {
+        return userMapper.usersToUserDTOs(userRepository.findAllInOrganization());
     }
 
     @Transactional(readOnly = true)

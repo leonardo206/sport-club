@@ -6,7 +6,6 @@ import com.mazimao.sportclub.service.OrganizationQueryService;
 import com.mazimao.sportclub.service.OrganizationService;
 import com.mazimao.sportclub.service.dto.OrganizationCriteria;
 import com.mazimao.sportclub.service.dto.OrganizationDTO;
-import com.mazimao.sportclub.service.mapper.OrganizationMapper;
 import com.mazimao.sportclub.web.rest.errors.BadRequestAlertException;
 import com.mazimao.sportclub.web.rest.errors.ForbiddenAlertException;
 import com.mazimao.sportclub.web.rest.errors.UniqueKeyViolationAlertException;
@@ -22,8 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -49,11 +46,7 @@ public class OrganizationResource {
 
     private final OrganizationQueryService organizationQueryService;
 
-    public OrganizationResource(
-        OrganizationService organizationService,
-        OrganizationQueryService organizationQueryService,
-        OrganizationMapper organizationMapper
-    ) {
+    public OrganizationResource(OrganizationService organizationService, OrganizationQueryService organizationQueryService) {
         this.organizationService = organizationService;
         this.organizationQueryService = organizationQueryService;
     }

@@ -108,12 +108,6 @@ public class UserQueryService extends QueryService<User> {
             if (criteria.getLangKey() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLangKey(), User_.langKey));
             }
-            if (criteria.getOrganizationId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getOrganizationId(), root -> root.join(User_.id, JoinType.LEFT).get(Organization_.user))
-                    );
-            }
         }
         return specification;
     }

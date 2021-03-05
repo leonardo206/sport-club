@@ -38,7 +38,7 @@ export class OrganizationUpdateComponent implements OnInit {
       this.updateForm(organization);
 
       this.userService
-        .query({ 'organizationId.notEquals': this.editForm.get('id')?.value })
+        .queryAvailableToOrganization(this.editForm.get(['id'])?.value)
         .subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }

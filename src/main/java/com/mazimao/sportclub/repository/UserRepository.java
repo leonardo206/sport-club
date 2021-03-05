@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -26,11 +27,8 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
-    Page<User> findAllByAuthoritiesIn(Pageable pageable, Set<Authority> authorities);
+    List<User> findAllByAuthoritiesIn(Set<Authority> authorities);
 
-    @Query(
-        "select user.id, user.login, user.firstName, user.lastName, user.email, user.imageUrl, user.activated, user.langKey " +
-        "from User user left join Organization org on org.user=user.id where org.id <>:organizationId "
-    )
-    List<User> findAllInOrganization(String organizationId);
+    @Query("select user " + "from User user join Organization org on org.user=user.id")
+    List<User> findAllInOrganization();
 }

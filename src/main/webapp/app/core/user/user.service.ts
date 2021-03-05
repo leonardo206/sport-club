@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, Pagination } from 'app/shared/util/request-util';
 import { IUser } from './user.model';
-import { IOrganization } from '../../shared/model/organization.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -13,15 +12,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  /*
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
     const options = createRequestOption(req);
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
-*/
 
-  query(req?: any): Observable<HttpResponse<IUser[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
+  queryAvailableToOrganization(organizationId?: number): Observable<HttpResponse<IUser[]>> {
+    const options = createRequestOption(organizationId);
+    return this.http.get<IUser[]>(`${this.resourceUrl}/available-to-organization`, { params: options, observe: 'response' });
   }
 }

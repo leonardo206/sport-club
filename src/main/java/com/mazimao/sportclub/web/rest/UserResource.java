@@ -2,6 +2,7 @@ package com.mazimao.sportclub.web.rest;
 
 import com.mazimao.sportclub.config.Constants;
 import com.mazimao.sportclub.security.AuthoritiesConstants;
+import com.mazimao.sportclub.service.OrganizationService;
 import com.mazimao.sportclub.service.UserQueryService;
 import com.mazimao.sportclub.service.UserService;
 import com.mazimao.sportclub.service.dto.*;
@@ -60,9 +61,12 @@ public class UserResource {
 
     private final UserQueryService userQueryService;
 
-    public UserResource(UserService userService, UserQueryService userQueryService) {
+    private final OrganizationService organizationService;
+
+    public UserResource(UserService userService, UserQueryService userQueryService, OrganizationService organizationService) {
         this.userService = userService;
         this.userQueryService = userQueryService;
+        this.organizationService = organizationService;
     }
 
     /*    @GetMapping("/users")
@@ -82,7 +86,7 @@ public class UserResource {
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsersByCriteria(UserCriteria criteria, Pageable pageable) {
         log.debug("REST request to get User by criteria: {}", criteria);
-        List<UserDTO> listFilteredUsers = userService.getAllManagedUsersByAuthorities(pageable).toList();
+        List<UserDTO> listFilteredUsers = userService.getAllManagedUsersByAuthorities();
         if (criteria != null) {
             //in case we call from organization we use organization notIn id
             listFilteredUsers = userQueryService.findByCriteria(criteria, pageable).filter(listFilteredUsers::contains).toList();
@@ -93,25 +97,27 @@ public class UserResource {
     }
 
     /**
-     * {@code GET /users/organization} : get all users not in the given organization.
+     * {@code GET /users/available-to-organization : get all users can be set to an organization.
      *
-     * @param pageable the pagination information.
-     * @param organization the organization.
+     * @param organizationId the organization id we want to filter for.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
-    @GetMapping("/users/organization/{organization}")
-    public ResponseEntity<List<UserDTO>> getAllUsersNotInOrganization(
-        Pageable pageable,
-        @PathVariable OrganizationDTO organization,
-        @RequestParam(name = "not-in", required = false) Boolean isNotIn
-    ) {
-        List<UserDTO> userList = userService.getAllUsersInOrganization(organization.getUserId());
-        final Page<UserDTO> page = userService.getAllManagedUsersByAuthorities(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            new PageImpl<>(page.get().filter(userList::contains).collect(Collectors.toList()))
-        );
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    @GetMapping("/users/available-to-organization")
+    public ResponseEntity<List<UserDTO>> getUsersAvailableToOrganization(@RequestParam(required = false) Long organizationId) {
+        log.debug("REST request to get Users available to organization: {}", organizationId);
+        final List<UserDTO> listFilteredUsers = userService.getAllManagedUsersByAuthorities();
+        Set<String> listUsersInAnOrganization = userService
+            .getAllUsersInOrganization()
+            .stream()
+            .map(UserDTO::getId)
+            .collect(Collectors.toSet());
+        if (organizationId != null) {
+            organizationService
+                .findOne(organizationId)
+                .ifPresent(organizationDTO -> listUsersInAnOrganization.removeIf(s -> s.equals(organizationDTO.getUserId())));
+        }
+        listFilteredUsers.removeIf(userDTO -> listUsersInAnOrganization.contains(userDTO.getId()));
+        return new ResponseEntity<>(listFilteredUsers, HttpStatus.OK);
     }
 
     /**
